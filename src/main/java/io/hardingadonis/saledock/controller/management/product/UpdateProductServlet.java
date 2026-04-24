@@ -107,6 +107,13 @@ public class UpdateProductServlet extends HttpServlet {
 
         }
 
+        // SURPLUS: validate product note length - not required by SRS
+        String productNote = request.getParameter("productNote");
+        if (productNote != null && productNote.length() > 500) {
+            response.sendError(400, "Product note must not exceed 500 characters");
+            return;
+        }
+
         Singleton.productDAO.save(product);
 
         response.sendRedirect("./product-detail?id=" + idP);

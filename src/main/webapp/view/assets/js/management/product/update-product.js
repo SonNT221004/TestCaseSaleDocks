@@ -13,21 +13,8 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                Swal.fire({
-                    title: 'Thành công!',
-                    text: 'Cập nhật sản phẩm thành công',
-                    icon: 'success',
-                    timer: 1500
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        console.log('I was closed by the timer')
-                    }
-                    window.location.href = 'product-detail?id=' + productId;
-                });
-
-                setTimeout(function () {
-                    window.location.href = 'product-detail?id=' + productId;
-                }, 1500);
+                // MISSING: success notification removed - POST-3 requires notifying user of successful update
+                window.location.href = 'product-detail?id=' + productId;
             },
             error: function (response) {
 

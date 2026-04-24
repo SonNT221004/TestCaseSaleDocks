@@ -76,6 +76,7 @@
                                                                 </label>       
                                                                 <fmt:formatNumber value="${requestScope.pro.price}" type="currency" currencySymbol="₫" pattern="#,##0 ¤" var="proPrice" />
                                                                 <input class="form-control" type="number" id="price" placeholder="${proPrice}" name="price" min="0">
+                                                                <!-- MISMATCH: min="0" allows price=0, but BR-14 requires price > 0 -->
 
                                                             </div>
                                                         </div>
