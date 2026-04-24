@@ -56,9 +56,31 @@ public class UpdateCustomerServlet extends HttpServlet {
         }
         
 
+        String email = request.getParameter("emailCus");
+
         Integer id_customer = Integer.valueOf(id);
         Customer customer = Singleton.customerDAO.getByID(id_customer).get();
+
+        // SURPLUS: SRS only allows updating name and address; email update is not specified
+        if (email != null && !email.trim().isEmpty()) {
+            if (!email.contains("@")) {
+                request.setAttribute("error", "Email không hợp lệ");
+                request.setAttribute("cus", customer);
+                request.getRequestDispatcher("/view/jsp/management/customer/update-customer.jsp").forward(request, response);
+                return;
+            }
+            customer.setEmail(email.trim());
+        }
+
+        // MISMATCH BR-3: should validate name length between 10 and 255 characters,
+        // but implementation only checks length < 5 (wrong threshold)
         if (!name.trim().isEmpty()) {
+            if (name.trim().length() < 5) {
+                request.setAttribute("error", "Tên khách hàng phải có ít nhất 5 ký tự");
+                request.setAttribute("cus", customer);
+                request.getRequestDispatcher("/view/jsp/management/customer/update-customer.jsp").forward(request, response);
+                return;
+            }
             customer.setName(name.trim());
         }
         if (!address.trim().isEmpty()) {
