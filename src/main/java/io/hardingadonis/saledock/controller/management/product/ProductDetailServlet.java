@@ -29,6 +29,7 @@ public class ProductDetailServlet extends HttpServlet {
         Optional<Product> product = Singleton.productDAO.getByID(idP);
 
         request.setAttribute("page", "product");
+        request.setAttribute("viewMode", "readonly");
 
         if (product.isPresent()) {
             var p = product.get();

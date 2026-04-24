@@ -30,11 +30,14 @@ public class Product {
     private String description;
 
     @Column(name = "`price`", nullable = false)
-    private Double price;
+    private Long price;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "`category_id`", nullable = false)
     private Category category;
+
+    @Column(name = "`stock_quantity`")
+    private Integer stockQuantity;
 
     @Column(name = "`image_url`", columnDefinition = "longtext")
     private String imageURL;
