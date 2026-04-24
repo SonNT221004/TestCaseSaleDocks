@@ -66,7 +66,8 @@ public class AddProductIntoOrder extends HttpServlet {
         Integer productId = Integer.parseInt(productIdParam);
         Integer productQuantity = Integer.parseInt(productQuantityParam);
         
-        if(productQuantity <= 0){
+        // MISMATCH: BR-8 requires quantity > 0, but this allows quantity == 0
+        if(productQuantity < 0){
             request.setAttribute("message", "productQuantityNotPositive");
             this.doGet(request, response);
             return;

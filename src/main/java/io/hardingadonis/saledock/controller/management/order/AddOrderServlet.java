@@ -87,6 +87,18 @@ public class AddOrderServlet extends HttpServlet {
 
                 Map<Integer, Integer> productMap = getProductMap(request);
 
+                // SURPLUS: check duplicate order for same customer within last 60 seconds (not in SRS)
+                List<Order> allOrders = Singleton.orderDAO.getAll();
+                for (Order existingOrder : allOrders) {
+                    if (existingOrder.getCustomer().getID().equals(customerId)) {
+                        java.time.LocalDateTime oneMinuteAgo = java.time.LocalDateTime.now().minusSeconds(60);
+                        if (existingOrder.getCreatedAt() != null && existingOrder.getCreatedAt().isAfter(oneMinuteAgo)) {
+                            response.sendRedirect("./add-order?customerId=" + customerId + "&message=duplicateOrder");
+                            return;
+                        }
+                    }
+                }
+
                 if (productMap.isEmpty()) {
                     response.sendRedirect("./add-order?customerId=" + customerId + "&message=emptyProduct");
                     return;
