@@ -41,7 +41,7 @@
                                                         <div class="col">
                                                             <div class="mb-3">
                                                                 <label class="form-label" for="username"><strong>Tên khách hàng</strong></label>
-                                                                <input class="form-control" type="text" id="username" placeholder="${requestScope.cus.name}" name="username" readonly="">
+                                                                <input class="form-control" type="text" id="username" placeholder="${requestScope.cus.code}" name="username" readonly="">
                                                             </div>
                                                         </div>
 
