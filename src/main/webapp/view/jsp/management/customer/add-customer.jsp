@@ -72,6 +72,15 @@
                                                                 <span class="form-message text-danger"></span>
                                                             </div>
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="phone">
+                                                                <strong>Số điện thoại</strong>
+                                                            </label>
+                                                            <div class="mb-3 form-group">
+                                                                <input class="form-control" type="text" id="phone-customer" placeholder="Nhập số điện thoại khách hàng" name="phone">
+                                                                <span class="form-message text-danger"></span>
+                                                            </div>
+                                                        </div>
                                                                 <%
                                                                     if(error != null) {
                                                                 %>

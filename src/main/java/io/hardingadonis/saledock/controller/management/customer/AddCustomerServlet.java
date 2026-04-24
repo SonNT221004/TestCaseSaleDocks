@@ -23,6 +23,12 @@ public class AddCustomerServlet extends HttpServlet {
         requestDispatcher.forward(request, response);
     }
 
+    private boolean isValidEmail(String email) {
+        // MISMATCH: regex sai — thiếu escape dấu chấm và cho phép domain không có TLD
+        String emailRegex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9-]+$";
+        return email.matches(emailRegex);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,7 +37,7 @@ public class AddCustomerServlet extends HttpServlet {
         String email = request.getParameter("email");
 
         try {
-            if (name.length() > 0 && address.length() > 0 && email.length() > 0) {
+            if (name.length() > 0 && address.length() > 0 && email.length() > 0 && isValidEmail(email)) {
                 Customer customer = new Customer();
                 customer.setName(name);
                 customer.setAddress(address);
