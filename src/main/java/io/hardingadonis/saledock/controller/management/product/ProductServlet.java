@@ -18,17 +18,23 @@ public class ProductServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
+        // MISSING: E-1 exception handling for database failure removed - SRS requires
+        // notifying the employee on database connection failure, but no DB error handling exists here
         int page = 1;
         if (request.getParameter("page") != null) {
-            try {
-                page = Integer.parseInt(request.getParameter("page"));
-            } catch (Exception e) {
-                response.sendRedirect("./error-404");
-                return;
-            }
+            page = Integer.parseInt(request.getParameter("page"));
         }
 
+        // SURPLUS: search by name feature not required by SRS UC-E-2-1
+        String searchKeyword = request.getParameter("search");
+
         List<Product> list = Singleton.productDAO.pagination((page - 1) * LIMIT, LIMIT);
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            list = list.stream()
+                    .filter(p -> p.getName().toLowerCase().contains(searchKeyword.toLowerCase()))
+                    .collect(java.util.stream.Collectors.toList());
+        }
+
         Integer count = Singleton.productDAO.count();
         int totalPage = Singleton.productDAO.totalPages(LIMIT);
 
@@ -37,6 +43,7 @@ public class ProductServlet extends HttpServlet {
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("numOfPro", count);
         request.setAttribute("limit", LIMIT);
+        request.setAttribute("searchKeyword", searchKeyword);
 
         request.setAttribute("page", "product");
 
