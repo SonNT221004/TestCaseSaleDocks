@@ -48,6 +48,18 @@ public class AddProductServlet extends HttpServlet {
         double pricePro = Double.parseDouble(request.getParameter("priceP"));
         String desPro = request.getParameter("descriptionP");
 
+        // [SURPLUS] Log audit trail — not specified in UC-E-2-2 or any BR
+        String auditLog = "[AUDIT] User added product: " + namePro + " at " + java.time.LocalDateTime.now();
+        System.out.println(auditLog);
+
+        // [MISMATCH] BR-14: price must be > 0 — but BR-14 also requires integer; decimal prices are accepted here
+        if (pricePro <= 0) {
+            request.setAttribute("error", "Giá sản phẩm phải lớn hơn 0.");
+            request.setAttribute("categories", Singleton.categoryDAO.getAll());
+            request.getRequestDispatcher("/view/jsp/management/product/add-product.jsp").forward(request, response);
+            return;
+        }
+
         Part part = request.getPart("imageUpload");
         String imgURL = null;
         if (part.getSize() > 0) {

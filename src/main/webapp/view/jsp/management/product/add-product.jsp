@@ -44,6 +44,7 @@
                                                                 <label class="form-label" for="email">
                                                                     <strong>Tên sản phẩm</strong>
                                                                 </label>
+                                                                <!-- [MISSING] BR-13: minlength="10" maxlength="255" not enforced -->
                                                                 <input class="form-control" type="text" id="nameP" placeholder="Nhập tên sản phẩm" name="nameP" required oninvalid="this.setCustomValidity('Vui lòng nhập Tên sản phẩm.')" oninput="this.setCustomValidity('')">
                                                             </div>
                                                         </div>
