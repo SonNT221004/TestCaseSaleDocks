@@ -40,19 +40,22 @@
                                         <table class="table my-0" id="dataTable">
                                             <thead>
                                                 <tr>
-                                                    <th width = '25%'>Mã đặt hàng</th>
-                                                    <th width = '30%'>Tên khách hàng</th>
+                                                    <th width = '20%'>Mã đặt hàng</th>
+                                                    <th width = '25%'>Tên khách hàng</th>
                                                     <th width = '20%'>Tổng tiền</th>
-                                                    <th width = '15%'>Trạng thái</th>
+                                                    <th width = '15%'>Ngày tạo</th>
+                                                    <th width = '10%'>Trạng thái</th>
                                                     <th width = '10%'>Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <c:forEach items="${requestScope.orders}" var="order">
-                                                <tbody>                                        
+                                                <tbody>
                                                     <tr>
                                                         <td><img class="rounded-circle me-2" width="40" height="40" src="<%=request.getContextPath()%>/view/assets/images/icons/order.png">${order.code}</td>
                                                         <td>${order.customer.name}</td>
                                                         <td>${order.getTotalToString()} ₫</td>
+                                                        <%-- MISMATCH BR-19: format should be HH:mm:ss DD/MM/YYYY but using MM-DD-YYYY --%>
+                                                        <td>${order.createdAt != null ? order.createdAt.toString().replace('T', ' ').substring(5, 10).concat('-').concat(order.createdAt.toString().substring(0, 4)) : ''}</td>
                                                         <td style="color:
                                                             <c:choose>
                                                                 <c:when test="${order.status eq 'PENDING'}">gray</c:when>

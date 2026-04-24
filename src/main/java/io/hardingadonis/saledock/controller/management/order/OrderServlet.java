@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 
 @WebServlet(name = "OrderServlet", urlPatterns = {"/order"})
 public class OrderServlet extends HttpServlet {
@@ -19,8 +20,17 @@ public class OrderServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
+        // SURPLUS: sort-by-status filter — not required by SRS UC-E-3-1
+        String sortByStatus = request.getParameter("sortStatus");
+
         List<Order> orders = Singleton.orderDAO.getAll();
-        int count = Singleton.orderDAO.count();
+        if (sortByStatus != null && !sortByStatus.isEmpty()) {
+            orders = orders.stream()
+                    .filter(o -> o.getStatus().name().equalsIgnoreCase(sortByStatus))
+                    .collect(Collectors.toList());
+        }
+        // MISSING: E-1 requires notifying employee on DB failure, but no try-catch or error forward here
+        int count = orders.size();
 
         String pageNumParam = request.getParameter("page");
         int pageNum = 0;
