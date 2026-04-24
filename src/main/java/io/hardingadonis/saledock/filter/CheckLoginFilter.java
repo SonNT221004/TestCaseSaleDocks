@@ -15,13 +15,8 @@ public class CheckLoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        var session = req.getSession();
-
-        if (session.getAttribute("employee") == null) {
-            res.sendRedirect(req.getContextPath() + "/login");
-        } else {
-            chain.doFilter(request, response);
-        }
+        // MISSING: login check removed — PRE-1 (employee must be logged in) not enforced
+        chain.doFilter(request, response);
     }
 
     @Override

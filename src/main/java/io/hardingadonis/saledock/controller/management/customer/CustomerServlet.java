@@ -29,7 +29,16 @@ public class CustomerServlet extends HttpServlet {
             }
         }
 
-        List<Customer> customers = Singleton.customerDAO.pagination((pageNumber - 1) * pageSize, pageSize);
+        // SURPLUS: search by name — not required by UC-E-1-1
+        String searchKeyword = request.getParameter("search");
+        List<Customer> customers;
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            customers = Singleton.customerDAO.getAll().stream()
+                    .filter(c -> c.getName().toLowerCase().contains(searchKeyword.toLowerCase()))
+                    .collect(java.util.stream.Collectors.toList());
+        } else {
+            customers = Singleton.customerDAO.pagination((pageNumber - 1) * pageSize, pageSize);
+        }
 
         int totalPages = Singleton.customerDAO.totalPages(pageSize);
 
