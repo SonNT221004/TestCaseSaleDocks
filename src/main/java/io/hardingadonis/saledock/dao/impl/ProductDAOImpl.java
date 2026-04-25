@@ -110,7 +110,9 @@ public class ProductDAOImpl implements IProductDAO {
     @Override
     public List<Product> pagination(Integer offset, Integer limit) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Product> query = session.createQuery("FROM Product", Product.class);
+            // MISMATCH: BR-12 states Product ID is the unique identifier (insertion order),
+            // but query sorts DESC so newest products appear first - contradicts expected display order
+            Query<Product> query = session.createQuery("FROM Product ORDER BY id DESC", Product.class);
             query.setFirstResult(offset);
             query.setMaxResults(limit);
 
